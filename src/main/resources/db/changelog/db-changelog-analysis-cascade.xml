@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+    <changeSet author="kristina.tanellari" id="add-foreign-key-constraint">
+        <addForeignKeyConstraint
+                baseColumnNames="patient_id"
+                baseTableSchemaName="public"
+                baseTableName="analysis"
+                constraintName="fk_analysis_patient_new"
+                referencedColumnNames="patient_id"
+                referencedTableSchemaName="public"
+                referencedTableName="patients"
+                deleteCascade="true"/>
+    </changeSet>
+
+    <changeSet author="kristina.tanellari" id="drop-foreign-key-constraint">
+        <preConditions>
+            <foreignKeyConstraintExists foreignKeyName="fk_analysis_patient" />
+        </preConditions>
+        <dropForeignKeyConstraint
+                baseTableSchemaName="public"
+                baseTableName="analysis"
+                constraintName="fk_analysis_patient" />
+    </changeSet>
+
+</databaseChangeLog>
+

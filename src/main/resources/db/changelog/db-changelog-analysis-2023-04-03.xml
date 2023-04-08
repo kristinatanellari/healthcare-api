@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+    <changeSet id="createTable" author="kristina.tanellari">
+        <createTable tableName="analysis">
+            <column name="analysis_id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="patient_id" type="BIGINT"/>
+            <column name="doctor_name" type="VARCHAR(255)"/>
+            <column name="age" type="INT"/>
+            <column name="gender" type="VARCHAR(10)"/>
+            <column name="results" type="VARCHAR(1000)"/>
+            <column name="date" type="DATE"/>
+            <column name="interpreted_by" type="VARCHAR(1000)"/>
+            <column name="interpreted" type="BOOLEAN"/>
+            <column name="performed_by" type="VARCHAR(1000)"/>
+            <column name="glucose" type="DOUBLE"/>
+            <column name="sodium" type="DOUBLE"/>
+            <column name="potassium" type="DOUBLE"/>
+            <column name="chloride" type="DOUBLE"/>
+            <column name="creatinine" type="DOUBLE"/>
+            <column name="uric_acid" type="DOUBLE"/>
+            <column name="calcium" type="DOUBLE"/>
+            <column name="magnesium" type="DOUBLE"/>
+            <column name="cholesterol" type="DOUBLE"/>
+            <column name="triglycerides" type="DOUBLE"/>
+            <column name="albumin" type="DOUBLE"/>
+            <column name="bilirubin" type="DOUBLE"/>
+            <column name="iron" type="DOUBLE"/>
+            <column name="notes" type="VARCHAR(1000)"/>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="patient_id" baseTableName="analysis"
+                                 constraintName="fk_analysis_patient"
+                                 referencedColumnNames="patient_id" referencedTableName="patients"/>
+    </changeSet>
+</databaseChangeLog>
+
