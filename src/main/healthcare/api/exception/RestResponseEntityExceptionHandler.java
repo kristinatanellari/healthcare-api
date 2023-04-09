@@ -16,10 +16,31 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 		return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(value = PaginationException.class)
-	protected ResponseEntity<Object> handlePaginationException(PaginationException paginationException) {
+	@ExceptionHandler(value = NotArticleAuthorException.class)
+	protected ResponseEntity<Object> handleNotArticleAuthorException(NotArticleAuthorException notArticleAuthorException) {
 		long code = System.currentTimeMillis();
-		String message = "code:" + code + " " + paginationException.getMessage();
+		String message = "code:" + code + " " + notArticleAuthorException.getMessage();
+		return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@ExceptionHandler(value = NotFoundData.class)
+	protected ResponseEntity<Object> handleNotFoundDataException(NotFoundData notFoundData) {
+		long code = System.currentTimeMillis();
+		String message = "code:" + code + " " + notFoundData.getMessage();
+		return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@ExceptionHandler(value = UnavailableDoctors.class)
+	protected ResponseEntity<Object> handleUnavailableDoctorsException(UnavailableDoctors unavailableDoctors) {
+		long code = System.currentTimeMillis();
+		String message = "code:" + code + " " + unavailableDoctors.getMessage();
+		return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@ExceptionHandler(value = UserNotFoundException.class)
+	protected ResponseEntity<Object> handleUserNotFoundException(UserNotFoundException userNotFoundException) {
+		long code = System.currentTimeMillis();
+		String message = "code:" + code + " " + userNotFoundException.getMessage();
 		return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }
