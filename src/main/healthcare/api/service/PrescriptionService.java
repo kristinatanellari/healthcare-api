@@ -59,7 +59,7 @@ public class PrescriptionService {
         } else {
             return "No prescription found for patient with id " + patientId + "!";
         }
-       return response.toString();
+        return response.toString();
     }
 
     public String executePrescription(ProcessPrescriptionDTO processPrescriptionDTO, Long prescriptionId) throws ValidateDataException {
@@ -87,6 +87,14 @@ public class PrescriptionService {
             throw new ValidateDataException("Doctor with id " + JwtFilter.id + " doesn't exists or there are not prescriptions!");
         }
         return doctor.getPrescriptions();
+    }
+
+    public void deletePrescription(Long prescriptionId) throws ValidateDataException {
+        Prescription prescription = prescriptionRepository.findByPrescriptionId(prescriptionId);
+        if (prescription == null) {
+            throw new ValidateDataException("Prescription with id " + prescriptionId + " doesn't exist! Please enter a valid id!");
+        }
+        prescriptionRepository.delete(prescription);
     }
 
 }

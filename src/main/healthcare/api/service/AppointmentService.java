@@ -1,8 +1,8 @@
 package main.healthcare.api.service;
 
+import main.healthcare.api.dto.AppointmentCreateDTO;
 import main.healthcare.api.dto.AppointmentUpdateDTO;
 import main.healthcare.api.exception.ValidateDataException;
-import main.healthcare.api.dto.AppointmentCreateDTO;
 import main.healthcare.api.model.Appointments;
 import main.healthcare.api.model.Doctors;
 import main.healthcare.api.model.Patients;
@@ -40,6 +40,7 @@ public class AppointmentService {
         Patients patient = patientsRepository.findByPatientId(JwtFilter.id);
         return patient.getMyAppointments();
     }
+
     public Appointments scheduleAppointment(AppointmentCreateDTO appointmentCreateDTO) throws ValidateDataException {
         Patients patients = patientsRepository.findByPatientId(JwtFilter.id);
         Doctors doctors = doctorsRepository.findByDoctorId(appointmentCreateDTO.getDoctorId());
@@ -65,8 +66,11 @@ public class AppointmentService {
         } else return appointmentCreateDTO.getAppointmentDate() != null;
     }
 
-    public String approveAppointment(Long appointmentId, AppointmentUpdateDTO appointmentUpdateDTO) {
+    public String approveAppointment(Long appointmentId, AppointmentUpdateDTO appointmentUpdateDTO) throws ValidateDataException {
         Appointments appointment = appointmentRepository.findByAppointmentId(appointmentId);
+        if (appointment == null) {
+            throw new ValidateDataException("Appointment with id " + appointmentId + " doesn't exist! Please enter a valid id!");
+        }
         if (appointmentUpdateDTO.isApproved()) {
             appointment.setApproved(true);
             appointmentRepository.save(appointment);
@@ -88,5 +92,14 @@ public class AppointmentService {
             return "Still waiting for doctor to approve the appointment. Please check later again!";
         }
     }
+
+    public void deleteMyAppointment(Long appointmentId) throws ValidateDataException {
+        Appointments appointment = appointmentRepository.findByAppointmentId(appointmentId);
+        if (appointment == null) {
+            throw new ValidateDataException("Appointment with id " + appointmentId + " doesn't exist! Please enter a valid id!");
+        }
+        appointmentRepository.delete(appointment);
+    }
+
 
 }

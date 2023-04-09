@@ -1,10 +1,9 @@
 package main.healthcare.api.controller;
 
 import main.healthcare.api.dto.ArticleDTO;
-import main.healthcare.api.dto.DiagnoseDTO;
+import main.healthcare.api.exception.NotArticleAuthorException;
 import main.healthcare.api.exception.ValidateDataException;
 import main.healthcare.api.model.Articles;
-import main.healthcare.api.model.Diagnose;
 import main.healthcare.api.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,5 +50,13 @@ public class ArticleController {
     public Articles readArticleById(@PathVariable Long articleId) throws ValidateDataException {
         logger.info("Getting article from database...");
         return articleService.readArticleById(articleId);
+    }
+
+    @PreAuthorize("hasAuthority('DOCTOR')")
+    @DeleteMapping("/doctor/deleteArticle/articleId={articleId}")
+    public ResponseEntity<Void> deleteArticle(@PathVariable Long articleId) throws ValidateDataException, NotArticleAuthorException {
+        logger.info("Deleting article from database...");
+        articleService.deleteArticle(articleId);
+        return ResponseEntity.noContent().build();
     }
 }

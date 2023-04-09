@@ -60,4 +60,12 @@ public class PrescriptionController {
         logger.info("Executing prescription in database...");
         return prescriptionService.executePrescription(processPrescriptionDTO, prescriptionId);
     }
+
+    @PreAuthorize("hasAuthority('DOCTOR')")
+    @DeleteMapping("/doctor/deletePrescription/prescriptionId={prescriptionId}")
+    public ResponseEntity<Void> deletePrescription(@PathVariable Long prescriptionId) throws ValidateDataException {
+        logger.info("Deleting prescription data in database...");
+        prescriptionService.deletePrescription(prescriptionId);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -1,6 +1,5 @@
 package main.healthcare.api.service;
 
-import io.jsonwebtoken.Jwt;
 import main.healthcare.api.dto.PharmacistDTO;
 import main.healthcare.api.exception.UserNotFoundException;
 import main.healthcare.api.exception.ValidateDataException;
@@ -12,6 +11,7 @@ import main.healthcare.api.security.JwtFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -28,6 +28,9 @@ public class PharmacistService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     public Pharmacist registerPharmacist(PharmacistDTO pharmacistDTO) throws ValidateDataException {
@@ -95,8 +98,9 @@ public class PharmacistService {
         newPharmacist.setPharmacyAddress(pharmacistDTO.getPharmacyAddress());
         newPharmacist.setPhoneNumber(pharmacistDTO.getPhoneNumber());
         newPharmacist.setUsername(pharmacistDTO.getUsername());
-        newPharmacist.setPassword(pharmacistDTO.getPassword());
+        newPharmacist.setPassword(passwordEncoder.encode(pharmacistDTO.getPassword()));
     }
+
     private boolean checkCreateValidation(PharmacistDTO pharmacistDTO) {
         if (Objects.equals(pharmacistDTO.getName(), "")) {
             return false;
@@ -104,7 +108,7 @@ public class PharmacistService {
             return false;
         } else if (Objects.equals(pharmacistDTO.getPharmacyAddress(), "")) {
             return false;
-        }  else if (Objects.equals(pharmacistDTO.getPhoneNumber(), "")) {
+        } else if (Objects.equals(pharmacistDTO.getPhoneNumber(), "")) {
             return false;
         } else if (Objects.equals(pharmacistDTO.getUsername(), "")) {
             return false;

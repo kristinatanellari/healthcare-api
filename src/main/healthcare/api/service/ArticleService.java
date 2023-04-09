@@ -2,10 +2,13 @@ package main.healthcare.api.service;
 
 import main.healthcare.api.controller.PatientsController;
 import main.healthcare.api.dto.ArticleDTO;
+import main.healthcare.api.exception.NotArticleAuthorException;
+import main.healthcare.api.exception.ValidateDataException;
 import main.healthcare.api.model.Articles;
 import main.healthcare.api.model.Doctors;
 import main.healthcare.api.repository.ArticleRepository;
 import main.healthcare.api.repository.DoctorsRepository;
+import main.healthcare.api.security.JwtFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +46,7 @@ public class ArticleService {
     public List<Articles> readArticleByDomain(String domain) {
         List<Articles> articles = articleRepository.findByDomain(domain);
         for (Articles a : articles) {
-            for (Doctors d : a.getAuthors()){
+            for (Doctors d : a.getAuthors()) {
                 System.out.println("Name = " + d.getName());
             }
         }
@@ -57,5 +60,18 @@ public class ArticleService {
 
     public Articles readArticleById(Long articleId) {
         return articleRepository.findByArticleId(articleId);
+    }
+
+    public void deleteArticle(Long articleId) throws ValidateDataException, NotArticleAuthorException {
+        Articles article = articleRepository.findByArticleId(articleId);
+        Doctors doctor = doctorsRepository.findByDoctorId(JwtFilter.id);
+        if (article == null) {
+            throw new ValidateDataException("Article with id " + articleId + " doesn't exist! Please enter a valid id!");
+        }
+        if (!article.getAuthors().contains(doctor)) {
+            throw new NotArticleAuthorException("The article can be deleted only by his authors!");
+        }
+
+        articleRepository.delete(article);
     }
 }
