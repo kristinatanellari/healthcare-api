@@ -32,8 +32,9 @@ public class PrescriptionService {
 
     public Prescription createPrescription(PrescriptionCreateDTO prescriptionCreateDTO) {
         Prescription prescription = new Prescription();
+        Doctors doctor = doctorsRepository.findByDoctorId(JwtFilter.id);
         prescription.setPatientId(prescriptionCreateDTO.getPatientId());
-        prescription.setDoctorId(prescriptionCreateDTO.getDoctorId());
+        prescription.setDoctorId(doctor.getDoctorId());
         prescription.setDate(prescriptionCreateDTO.getDate());
         prescription.setContent(prescriptionCreateDTO.getContent());
 

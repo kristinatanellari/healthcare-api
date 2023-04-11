@@ -7,4 +7,5 @@
     <include file="db/changelog/db-changelog-analysis-cascade.xml"/>
     <include file="db/changelog/db-changelog-add-constraints.xml"/>
     <include file="db/changelog/db-changelog-appointments-change.xml"/>
+    <include file="db/changelog/db.changelog-modify-deleteCascade.xml"/>
 </databaseChangeLog>

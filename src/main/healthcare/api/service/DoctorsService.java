@@ -8,6 +8,7 @@ import main.healthcare.api.exception.ValidateDataException;
 import main.healthcare.api.model.*;
 import main.healthcare.api.repository.AppointmentRepository;
 import main.healthcare.api.repository.DoctorsRepository;
+import main.healthcare.api.repository.PatientsRepository;
 import main.healthcare.api.repository.UserRepository;
 import main.healthcare.api.security.JwtFilter;
 import org.slf4j.Logger;
@@ -36,6 +37,9 @@ public class DoctorsService {
 
     @Autowired
     private UsersService usersService;
+
+    @Autowired
+    private PatientsRepository patientsRepository;
 
 
     public List<Doctors> getAllDoctors() {
@@ -164,6 +168,11 @@ public class DoctorsService {
     public void deleteMyAccount() {
         Doctors doctor = doctorsRepository.findByDoctorId(JwtFilter.id);
         Users user = userRepository.findByUsername(doctor.getUsername());
+        List<Patients> patients = doctor.getPatientsList();
+        for (Patients p : patients) {
+            p.setDoctorId(null);
+            patientsRepository.save(p);
+        }
         userRepository.delete(user);
         doctorsRepository.delete(doctor);
     }
