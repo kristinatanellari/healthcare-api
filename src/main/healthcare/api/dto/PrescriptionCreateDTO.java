@@ -6,8 +6,6 @@ public class PrescriptionCreateDTO {
 
     private Long patientId;
 
-    private Long doctorId;
-
     private Date date;
 
     private String content;
@@ -18,14 +16,6 @@ public class PrescriptionCreateDTO {
 
     public void setPatientId(Long patientId) {
         this.patientId = patientId;
-    }
-
-    public Long getDoctorId() {
-        return doctorId;
-    }
-
-    public void setDoctorId(Long doctorId) {
-        this.doctorId = doctorId;
     }
 
     public Date getDate() {
